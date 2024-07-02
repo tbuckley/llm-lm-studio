@@ -3,9 +3,9 @@ from openai import OpenAI
 
 @llm.hookimpl
 def register_models(register):
-    register(Markov())
+    register(LMStudio())
 
-class Markov(llm.Model):
+class LMStudio(llm.Model):
     model_id = "lm-studio"
     can_stream = True
 
