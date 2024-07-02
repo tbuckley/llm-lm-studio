@@ -17,6 +17,10 @@ class LMStudio(llm.Model):
             description="Port for LM Studio server",
             default=None,
         )
+        model: Optional[str] = Field(
+            description="Model ID",
+            default=None,
+        )
 
         @field_validator("port")
         def validate_port(cls, port):
@@ -46,7 +50,7 @@ class LMStudio(llm.Model):
         port = prompt.options.port or 1234
         client = OpenAI(base_url=f"http://localhost:{port}/v1", api_key="lm-studio")
         response = client.chat.completions.create(
-            model=self.get_first_model(port),
+            model=prompt.options.model or self.get_first_model(port),
             messages=self.build_messages(prompt, conversation),
             temperature=0.8,
             stream=True,
