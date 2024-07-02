@@ -1,0 +1,6 @@
+[project]
+name = "llm-lm-studio"
+version = "0.1"
+
+[project.entry-points.llm]
+lm-studio = "llm_lm_studio"
