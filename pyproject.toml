@@ -1,7 +1,7 @@
 [project]
 name = "llm-lm-studio"
 version = "0.1"
-dependencies = ["openai", "llm"]
+dependencies = ["openai", "httpx", "llm"]
 
 [project.entry-points.llm]
 lm-studio = "llm_lm_studio"
