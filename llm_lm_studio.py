@@ -10,13 +10,19 @@ class LMStudio(llm.Model):
     can_stream = True
 
     def execute(self, prompt, stream, response, conversation):
+        messages = []
+        if prompt.system is not None:
+            messages.append({"role": "system", "content": prompt.system})
+        if conversation is not None:
+            for response in conversation.responses:
+                messages.append({"role": "user", "content": response.prompt.prompt})
+                messages.append({"role": "assistant", "content": response.text()})
+        messages.append({"role": "user", "content": prompt.prompt})
+
         client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
         response = client.chat.completions.create(
             model="bartowski/gemma-2-9b-it-GGUF/gemma-2-9b-it-Q4_K_M.gguf",
-            messages=[
-                *([{"role": "system", "content": prompt.system}] if prompt.system is not None else []),
-                {"role": "user", "content": prompt.prompt},
-            ],
+            messages=messages,
             temperature=0.7,
             stream=True,
         )
